@@ -1,0 +1,133 @@
+<link rel="import" href="bower_components/polymer/polymer.html"/>
+<link rel="import" href="bower_components/paper-card/paper-card.html"/>
+<link rel="import" href="./table-items.html"/>
+<link rel="import" href="./table-footer.html"/>
+<link rel="import" href="./table-header.html"/>
+<link rel="import" href="./data-repo.html"/>
+<dom-module id="paper-data-table">
+  <style>
+
+  :host {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  :host .loading {
+      width:100%;
+      height: 100%;
+      z-index: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: rgba(0,0,0,.2);
+  }
+
+  :host .loading paper-spinner {
+      position: relative;
+      top: 50%;
+      left: 50%;
+  }
+
+  :host .hide {
+      display: none;
+      visibility: hidden;
+  }
+
+
+
+  </style>
+  <template>
+    <paper-card>
+      <table-data-repo id="{{_getDataId(name)}}" name="{{name}}" service-url="[[dataUrl]]"></table-data-repo>
+      <table-header id="{{_getHeaderId(name)}}"  headings="{{headers}}" select-all="{{selectAll}}" actions="{{actions}}" title-text="{{name}}" selected-rows="[[selectedRows]]"></table-header>
+      <content ></content>
+      <table-items  id="{{_getContentId(name)}}" headings="{{headers}}" data="{{data}}" actions="{{actions}}" selected-rows="[[selectedRows]]"></table-items>
+      <table-footer id="{{_getFooterId(name)}}" data="{{data}}"></table-footer>
+      <template is="dom-if" if="{{loading}}">
+        <div class="loading" fill>
+          <paper-spinner self-center active></paper-spinner>
+        </div>
+      </template>
+    </paper-card>
+  </template>
+</dom-module>
+<script>
+Polymer({
+  is: 'paper-data-table',
+  properties: {
+    headers: {
+      type: Array,
+      value: [],
+      notify:true
+    },
+    loading: {
+      type: Boolean,
+      value: true,
+      notify: true
+    },
+    data: {
+      type: Array,
+      value: []
+    },
+    dataUrl: String,
+    name: {
+      type: String,
+      value: 'DataTable'
+    },
+    selectedRows: {
+      type: Object,
+      value: {},
+      notify: true
+    },
+    actions : {
+          type: Object,
+          value: {},
+          notify: true
+    }
+  },
+  sortColumn: function(e) {
+  },
+  ready: function() {
+    this.addEventListener('data.loaded', function(e) {
+        var response = e.detail;
+        this.loading = false;
+        this.data = response.Result;
+    });
+
+    this.addEventListener('data.loading', this.loadData);
+
+    this.addEventListener('row.selected',function(e) {
+      var row = Polymer.dom(e).event.detail;
+      this.selectedRows[row.id] = row;
+    });
+
+    this.addEventListener('row.deselected',function(e) {
+      var row = Polymer.dom(e).event.detail;
+      delete this.selectedRows[row.id];
+    });
+  },
+  _loadData: function(e) {
+      this.loading = true;
+
+  },
+  _getHeaderId: function(name) {
+    return app.slugify(name) + '-' + 'header';
+  },
+  _getContentId: function(name) {
+    return app.slugify(name) + '-' + 'content';
+  },
+  _getFooterId: function(name) {
+    return app.slugify(name) + '-' + 'footer';
+  },
+  _getDataId: function(name) {
+    return app.slugify(name) + '-' + 'data';
+  },
+  _sortColumn: function(columnId, direction) {
+    return columnId + direction;
+  },
+  _countSelected: function() {
+    return 0;
+  }
+});
+</script>

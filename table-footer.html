@@ -1,0 +1,109 @@
+<dom-module id="table-footer">
+  <style>
+  :host {
+    height: 56px;
+    display: flex;
+    flex-direction: row;
+  }
+
+  :host  .whiteSpace {
+      width:33.333333%;
+  }
+
+  :host .actions {
+      width:33.333333%;
+      padding-right: 24px;
+      display: block;
+      position: relative;
+  }
+
+  :host .actions .action {
+      display: block;
+  }
+
+  :host .actions .action.viewingLabel {
+      height:100%;
+  }
+
+  :host .actions .page-buttons {
+      position: absolute;
+      right: 40px;
+      top: 8px;
+  }
+
+  :host .actions .view-label {
+      position: absolute;
+      right: 150px;
+      top: 21px;
+  }
+
+  :host  * {
+    font-size: 12px;
+  }
+
+  @media all and (max-width: 500px) {
+      :host {
+          display: none;
+      }
+  }
+
+  </style>
+  <template>
+        <div class="whiteSpace"> &nbsp; </div>
+        <div class="whiteSpace"> &nbsp; </div>
+        <div class="actions">
+            <div class="rowsPerPage action">
+              <paper-dropdown-menu label=" Rows per page: " nofloatlabel id="RowsPerPage" value="{{rowsPerPage::input}}">
+                <paper-menu class="dropdown-content">
+                  <paper-item  value="10"> 10 </paper-item>
+                  <paper-item  value="15"> 15 </paper-item>
+                  <paper-item  value="20"> 20 </paper-item>
+                  <paper-item  value="25"> 25 </paper-item>
+                </paper-menu>
+              </paper-dropdown-menu>
+            </div>
+            <div class="view-label action">
+              <span>{{_toFullSelect(startFrom,rowsPerPage)}}</span>
+              of
+              <span>{{getTotalItems(data)}}</span>
+            </div>
+            <div class="page-buttons action">
+              <paper-icon-button icon="arrow-back" class="item"></paper-icon-button>
+              <paper-icon-button icon="arrow-forward" class="item" ></paper-icon-button>
+            </div>
+        </div>
+  </template>
+</dom-module>
+<script>
+
+  Polymer({
+    is: 'table-footer',
+    properties: {
+      currentPage: Number,
+      startFrom: {
+        type: Number,
+        value: 1,
+        notify: true
+      },
+      rowsPerPage: {
+        type: Number,
+        value: 10,
+        notify: true
+      },
+      totalItems: Number,
+      data: {
+        type: Array,
+        value: [],
+        notify: true
+      }
+    },
+    _toFullSelect: function(startFrom, rowsPerPage) {
+      return startFrom + '-' + rowsPerPage;
+    },
+    getTotalItems: function(data) {
+        if(data != undefined) {
+          return data.length;
+        }
+    }
+  });
+</script>
