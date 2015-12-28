@@ -1,4 +1,4 @@
 # paper-table
 Paper Table, Based on the Google Table Design Guidlines.
 
-[https://trello.com/b/OssFXLss/paper-table](See Progress Here)
+[See Progress Here (trello board)](https://trello.com/b/OssFXLss/paper-table)
