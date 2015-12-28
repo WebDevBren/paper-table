@@ -1,5 +1,6 @@
 {
   "name": "paper-table",
+  "version": "0.0.1",
   "homepage": "https://github.com/WebDevBren/paper-table",
   "authors": [
     "webdevbren <brendan@the-tool-shed.uk>"
@@ -24,6 +25,10 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#1.0"
+    "polymer": "Polymer/polymer#^1.2.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^3.4.0"
   }
 }
