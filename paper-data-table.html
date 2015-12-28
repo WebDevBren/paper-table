@@ -1,9 +1,7 @@
 <link rel="import" href="bower_components/polymer/polymer.html"/>
-<link rel="import" href="bower_components/paper-card/paper-card.html"/>
 <link rel="import" href="./table-items.html"/>
 <link rel="import" href="./table-footer.html"/>
 <link rel="import" href="./table-header.html"/>
-<link rel="import" href="./data-repo.html"/>
 <dom-module id="paper-data-table">
   <style>
 
@@ -38,18 +36,15 @@
 
   </style>
   <template>
-    <paper-card>
       <table-data-repo id="{{_getDataId(name)}}" name="{{name}}" service-url="[[dataUrl]]"></table-data-repo>
       <table-header id="{{_getHeaderId(name)}}"  headings="{{headers}}" select-all="{{selectAll}}" actions="{{actions}}" title-text="{{name}}" selected-rows="[[selectedRows]]"></table-header>
-      <content ></content>
-      <table-items  id="{{_getContentId(name)}}" headings="{{headers}}" data="{{data}}" actions="{{actions}}" selected-rows="[[selectedRows]]"></table-items>
+      <content id="{{_getContentId(name)}}" headings="{{headers}}" data="{{data}}" actions="{{actions}}" selected-rows="[[selectedRows]]" ></content>
       <table-footer id="{{_getFooterId(name)}}" data="{{data}}"></table-footer>
       <template is="dom-if" if="{{loading}}">
         <div class="loading" fill>
           <paper-spinner self-center active></paper-spinner>
         </div>
       </template>
-    </paper-card>
   </template>
 </dom-module>
 <script>

@@ -1,0 +1,29 @@
+{
+  "name": "paper-table",
+  "homepage": "https://github.com/WebDevBren/paper-table",
+  "authors": [
+    "webdevbren <brendan@the-tool-shed.uk>"
+  ],
+  "description": "A Polymer Web Component Based on Google Design Guidlines",
+  "main": "paper-data-table.html",
+  "moduleType": [],
+  "keywords": [
+    "polymer",
+    "Data-table",
+    "paper",
+    "Material",
+    "Design"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.0"
+  }
+}
