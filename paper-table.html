@@ -1,8 +1,9 @@
-<link rel="import" href="bower_components/polymer/polymer.html"/>
-<link rel="import" href="./table-items.html"/>
-<link rel="import" href="./table-footer.html"/>
-<link rel="import" href="./table-header.html"/>
-<dom-module id="paper-data-table">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-spinner/paper-spinner.html">
+<link rel="import" href="./table-items.html">
+<link rel="import" href="./table-footer.html">
+<link rel="import" href="./table-header.html">
+<dom-module id="paper-table">
   <style>
 
   :host {
@@ -36,10 +37,26 @@
 
   </style>
   <template>
-      <table-data-repo id="{{_getDataId(name)}}" name="{{name}}" service-url="[[dataUrl]]"></table-data-repo>
-      <table-header id="{{_getHeaderId(name)}}"  headings="{{headers}}" select-all="{{selectAll}}" actions="{{actions}}" title-text="{{name}}" selected-rows="[[selectedRows]]"></table-header>
-      <content id="{{_getContentId(name)}}" headings="{{headers}}" data="{{data}}" actions="{{actions}}" selected-rows="[[selectedRows]]" ></content>
-      <table-footer id="{{_getFooterId(name)}}" data="{{data}}"></table-footer>
+      <table-header 
+        id="{{_getHeaderId(name)}}"  
+        headings="{{headers}}" 
+        select-all="{{selectAll}}" 
+        actions="{{actions}}" 
+        title-text="{{name}}" 
+        selected-rows="[[selectedRows]]"></table-header>
+        
+      <content 
+        id="{{_getContentId(name)}}" 
+        headings="{{headers}}" 
+        data="{{data}}" 
+        actions="{{actions}}" 
+        selected-rows="[[selectedRows]]"></content>
+         
+      <table-footer 
+        id="{{_getFooterId(name)}}" 
+        data="{{data}}"></table-footer>
+        
+      <!-- The Load Spinner --> 
       <template is="dom-if" if="{{loading}}">
         <div class="loading" fill>
           <paper-spinner self-center active></paper-spinner>
@@ -49,7 +66,7 @@
 </dom-module>
 <script>
 Polymer({
-  is: 'paper-data-table',
+  is: 'paper-table',
   properties: {
     headers: {
       type: Array,
@@ -81,14 +98,8 @@ Polymer({
           notify: true
     }
   },
-  sortColumn: function(e) {
-  },
   ready: function() {
-    this.addEventListener('data.loaded', function(e) {
-        var response = e.detail;
-        this.loading = false;
-        this.data = response.Result;
-    });
+    this.addEventListener('data.loaded', this.DataLoaded);
 
     this.addEventListener('data.loading', this.loadData);
 
@@ -102,27 +113,43 @@ Polymer({
       delete this.selectedRows[row.id];
     });
   },
+  /** Fires when data is Loading */
   _loadData: function(e) {
       this.loading = true;
-
   },
+  /** Fires when Data has Finished Loading **/
+  _DataLoaded: function(e) {
+        var response = e.detail;
+        this.loading = false;
+        this.data = response.Result;
+  },
+  /** Generates a unique Id For the Header, Based on the name of the Table */
   _getHeaderId: function(name) {
     return app.slugify(name) + '-' + 'header';
   },
-  _getContentId: function(name) {
+  /** Generates a unique Id For the Content, Based on the name of the Table */
+  _getContentId: function(name) {    
     return app.slugify(name) + '-' + 'content';
   },
+  /** Generates a unique Id For the Footer, Based on the name of the Table */
   _getFooterId: function(name) {
     return app.slugify(name) + '-' + 'footer';
   },
-  _getDataId: function(name) {
-    return app.slugify(name) + '-' + 'data';
-  },
+  /** Is Called to Sort the Data Array */
   _sortColumn: function(columnId, direction) {
-    return columnId + direction;
   },
-  _countSelected: function() {
-    return 0;
+  /** Fires when an item is Selected */
+  ItemSelected: function(e) {
+  },
+  /** Fires when a Column has finished Sorting */
+  ColumnSorted : function(e) {
+  },
+  /** Fires when the Data has Finished Filtering */
+  DataFiltered: function(e) {
+  },
+  /** Fires when a Item is Added TEMP */
+  ItemAdded : function(e) {
   }
-});
+
+  });
 </script>
